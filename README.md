@@ -16,7 +16,7 @@ docker run \
     doganm95/dynu-ddns-updater
 ```
 
-- Replace everything in brackets `<>` with your data:
+- Replace brackets `<>` and the text inside with your data:
   - `DYNU_USERNAME` (string): your dynu account username
   - `DYNU_PASSWORD` (string): your dynu password
   - `DYNU_HOSTNAME` (string): the hostname in your account to get its ipv4 address updated
