@@ -11,7 +11,7 @@ while true; do
         if [ "$CURRENT_IPV4" != "$PREVIOUS_IPV4" ]; then
             echo "New IPV4: $CURRENT_IPV4"
             echo # Add a line break
-            wget -qO- "http://api.dynu.com/nic/update?myip=${CURRENT_IPV4}&username=${DYNU_USERNAME}&password=${DYNU_PASSWORD}"
+            wget -qO- "http://api.dynu.com/nic/update?myip=${CURRENT_IPV4}&hostnme=${CURRENT_IPV4}&username=${DYNU_USERNAME}&password=${DYNU_PASSWORD}"
             PREVIOUS_IPV4=$CURRENT_IPV4
         fi
         sleep $POLLING_INTERVAL
