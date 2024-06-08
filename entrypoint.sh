@@ -4,6 +4,13 @@ PREVIOUS_IPV4=""
 SERVICES="http://ipinfo.io/ip" # Add services into existing string, separated by space
 index=0
 
+# Function to get the list of domains
+get_domains() {
+    curl -s -X GET "https://api.dynu.com/v2/dns" \
+    -H "accept: application/json" \
+    -H "API-Key: ${DYNU_API_KEY}"
+}
+
 while true; do
     for SERVICE in $SERVICES; do
         CURRENT_IPV4=$(curl -s "$SERVICE")
