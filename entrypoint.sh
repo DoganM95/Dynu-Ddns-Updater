@@ -15,7 +15,24 @@ get_domains() {
 get_dns_records() {
     curl -s -X GET "https://api.dynu.com/v2/dns/${1}/record" \
     -H "accept: application/json" \
-    -H "API-Key: ${API_KEY}"
+    -H "API-Key: ${DYNU_API_KEY}"
+}
+
+# Function to update DNS record
+update_dns_record() {
+    DOMAIN_ID=$1
+    DNS_RECORD_ID=$2
+    NEW_IPV4=$3
+
+    curl -s -X POST "https://api.dynu.com/v2/dns/${DOMAIN_ID}/record/${DNS_RECORD_ID}" \
+    -H "accept: application/json" \
+    -H "API-Key: ${DYNU_API_KEY}" \
+    -H "Content-Type: application/json" \
+    -d '{
+        "nodeName": "'"$(echo $DYNU_DOMAIN_NAME | cut -d. -f1)"'",
+        "recordType": "A",
+        "address": "'"${NEW_IPV4}"'"
+    }'
 }
 
 while true; do
