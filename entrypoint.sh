@@ -11,6 +11,13 @@ get_domains() {
     -H "API-Key: ${DYNU_API_KEY}"
 }
 
+# Function to get DNS records
+get_dns_records() {
+    curl -s -X GET "https://api.dynu.com/v2/dns/${1}/record" \
+    -H "accept: application/json" \
+    -H "API-Key: ${API_KEY}"
+}
+
 while true; do
     for SERVICE in $SERVICES; do
         CURRENT_IPV4=$(curl -s "$SERVICE")
