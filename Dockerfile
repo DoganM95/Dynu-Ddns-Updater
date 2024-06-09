@@ -4,7 +4,7 @@ FROM alpine:latest
 WORKDIR /app
 
 # Install necessary packages
-RUN apk --no-cache add curl bash
+RUN apk --no-cache add curl bash jq
 
 # Copy files
 COPY entrypoint.sh ./entrypoint.sh
