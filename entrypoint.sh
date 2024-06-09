@@ -42,7 +42,7 @@ while true; do
 
             # Get the list of domains & extract the domain ID
             DOMAINS=$(get_domains)
-            DOMAIN_ID=$(echo $DOMAINS | jq -r --arg name "$DYNU_DOMAIN_NAME" '.[] | select(.name == $name) | .id')
+            DOMAIN_ID=$(echo $DOMAINS | jq -r --arg name "$DYNU_DOMAIN_NAME" '.domains[] | select(.name == $name) | .id')
 
             if [ -z "$DOMAIN_ID" ]; then
                 echo "Error: Domain ID for $DYNU_DOMAIN_NAME not found."
