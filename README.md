@@ -8,12 +8,25 @@ Automatically updates a dynu ddns hostname's ipv4 address to the address of the 
 
 ## Docker
 
+### Linux
+
 ```shell
 docker run \
     -e "DYNU_API_KEY=<key>" \
     -e "DYNU_DOMAIN_NAME=<domain>" \
     -e "POLLING_INTERVAL=<interval>" \
     --restart=always \
+    doganm95/dynu-ddns-updater
+```
+
+### WIndows
+
+```powershell
+docker run `
+    -e "DYNU_API_KEY=<key>" `
+    -e "DYNU_DOMAIN_NAME=<domain>" `
+    -e "POLLING_INTERVAL=<interval>" `
+    --restart=always `
     doganm95/dynu-ddns-updater
 ```
 
