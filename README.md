@@ -15,8 +15,9 @@ docker run \
     -e "DYNU_API_KEY=<key>" \
     -e "DYNU_DOMAIN_NAME=<domain>" \
     -e "POLLING_INTERVAL=<interval>" \
+    --pull=always \
     --restart=always \
-    doganm95/dynu-ddns-updater
+    ghcr.io/doganm95/dynu-ddns-updater:latest
 ```
 
 ### WIndows
@@ -26,8 +27,9 @@ docker run `
     -e "DYNU_API_KEY=<key>" `
     -e "DYNU_DOMAIN_NAME=<domain>" `
     -e "POLLING_INTERVAL=<interval>" `
+    --pull=always `
     --restart=always `
-    doganm95/dynu-ddns-updater
+    ghcr.io/doganm95/dynu-ddns-updater:latest
 ```
 
 - Replace brackets `<>` and the text inside with your data:
