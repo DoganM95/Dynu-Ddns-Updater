@@ -51,7 +51,9 @@ while true; do
 
             # Get DNS records & extract record ID for given domain name
             DNS_RECORDS=$(get_dns_records $DOMAIN_ID)
-            DNS_RECORD_ID=$(echo $DNS_RECORDS | jq -r --arg name "$DYNU_DOMAIN_NAME" '.[] | select(.nodeName + "." + .domainName == $name) | .id')
+            echo "DNS_RECORDS: $DNS_RECORDS"
+
+            DNS_RECORD_ID=$(echo $DNS_RECORDS | jq -r --arg name "$DYNU_DOMAIN_NAME" '.dnsRecords[] | select(.hostname == $name and .recordType == "A") | .id')
 
             if [ -z "$DNS_RECORD_ID" ]; then
                 echo "Error: DNS record for $DYNU_DOMAIN_NAME not found."
