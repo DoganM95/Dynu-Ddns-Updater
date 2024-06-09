@@ -4,7 +4,7 @@ Automatically updates a dynu ddns hostname's ipv4 address to the address of the 
 
 - Default polling interval of 1 minute, needs a dynu account
 - Free service used here `ipinfo.io/ip` has a rate limiting of 50k requests / month
-- 60 Seond interval = max (31 *24* 3600) / 60 = 44640 requests / month
+- 60 Seond interval = `max (31 * 24 * 3600) / 60 = 44640 requests / month`
 
 ## Docker
 
