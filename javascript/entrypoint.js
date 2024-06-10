@@ -1,5 +1,5 @@
 const axios = require("axios");
-const dotenv = require("dotenv").config();
+const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
 
 // Environment variables
 const DYNU_API_KEY = process.env.DYNU_API_KEY;
