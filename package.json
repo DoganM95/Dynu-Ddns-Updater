@@ -1,0 +1,15 @@
+{
+  "name": "dynu-dns-updater",
+  "version": "1.0.0",
+  "description": "Automatically updates a dynu ddns hostname's ipv4 address to the address of the machine it runs on, whenever it changes.",
+  "main": "entrypoint.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "DoganM95",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.2",
+    "dotenv": "^16.4.5"
+  }
+}
