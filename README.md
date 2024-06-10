@@ -30,6 +30,7 @@ Specs of the image:
 
 ```shell
 docker run \
+    -d \
     -e "DYNU_API_KEY=<key>" \
     -e "DYNU_DOMAIN_NAME=<domain>" \
     -e "POLLING_INTERVAL=<interval>" \
@@ -42,6 +43,7 @@ docker run \
 
 ```powershell
 docker run `
+    -d \
     -e "DYNU_API_KEY=<key>" `
     -e "DYNU_DOMAIN_NAME=<domain>" `
     -e "POLLING_INTERVAL=<interval>" `
