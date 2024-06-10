@@ -1,15 +1,19 @@
 FROM node:alpine
 
-# Set work directory
-WORKDIR /app
+# Create and change to app dir
+WORKDIR /usr/src/app
 
-# Install necessary packages
-RUN apk --no-cache add curl bash jq
+# Copy package & -lock.json
+COPY package*.json ./
 
-# Copy files
-COPY entrypoint.sh ./entrypoint.sh
+# Install dependencies
+RUN npm install
 
-# Make the script executable
-RUN chmod +x ./entrypoint.sh
+# Copy the source, files copied are only those in public repo by github action
+COPY . .
 
-ENTRYPOINT ["/app/entrypoint.sh"]
+# Expose the port
+EXPOSE 8080
+
+# Command to run the application
+CMD ["node", "entrypoint.js"]
