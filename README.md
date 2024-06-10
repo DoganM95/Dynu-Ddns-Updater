@@ -14,6 +14,7 @@ There are two variants of this thing, but using the shell one is highly recommen
 
 A debuggable version, created only to ease the development process and having a quickly debuggable code on windows. 
 Specs of the image:
+
 - Name: `dynu-ddns-updater-js`
 - Size: `152 MB`
 
@@ -21,6 +22,7 @@ Specs of the image:
 
 The derived script off the javascript variant, for production use. Lightweight and goes easy on the resources.
 Specs of the image:
+
 - Name: `dynu-ddns-updater-shell`
 - Size: `17 MB`
 
