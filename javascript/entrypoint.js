@@ -51,8 +51,8 @@ const updateDnsService = async (id, newIpv4, newIpv6) => {
         );
         return response.status;
     } catch (error) {
-        console.error(`Error updating DNS record ID ${dnsRecordId} for domain ID ${id}:`, error);
-        return error.response.status;
+        console.error(`Error updating DNS service for domain ID ${id}:`, error);
+        return error.response ? error.response.status : 500;
     }
 };
 
@@ -62,38 +62,50 @@ const mainLoop = async () => {
     try {
         if (!mutex) {
             mutex = true;
-            console.log(`Checking ipv4 at ${Date.now()}`);
+            console.log(`Checking IPv4 at ${new Date().toISOString()}`);
             for (const SERVICE of SERVICES) {
-                const response = await axios.get(SERVICE);
-                const CURRENT_IPV4 = response.data.trim();
+                try {
+                    const response = await axios.get(SERVICE);
+                    const CURRENT_IPV4 = response.data.trim();
 
-                if (CURRENT_IPV4 != PREVIOUS_IPV4) {
-                    console.log(`Updating ipv4 due to a change...`);
+                    if (CURRENT_IPV4 !== PREVIOUS_IPV4) {
+                        console.log(`Updating IPv4 due to a change...`);
 
-                    // Get the list of domains & extract the domain ID
-                    const domains = await getDomains();
-                    const domain = domains.domains.find((d) => d.name === DYNU_DOMAIN_NAME);
-                    if (!domain) {
-                        console.error(`Error: Domain ID for ${DYNU_DOMAIN_NAME} not found.`);
-                        process.exit(1);
+                        // Get the list of domains & extract the domain ID
+                        const domains = await getDomains();
+                        if (!domains) {
+                            console.error("Failed to fetch domains.");
+                            mutex = false;
+                            continue;
+                        }
+
+                        const domain = domains.domains.find((d) => d.name === DYNU_DOMAIN_NAME);
+                        if (!domain) {
+                            console.error(`Error: Domain ID for ${DYNU_DOMAIN_NAME} not found.`);
+                            process.exit(1);
+                        }
+
+                        const domainId = domain.id;
+                        await sleep(1000);
+
+                        // Update the DNS service
+                        const resStatus = await updateDnsService(domainId, CURRENT_IPV4, null);
+                        if (resStatus === 200) {
+                            console.log(`Successfully updated IPv4 from ${PREVIOUS_IPV4} to ${CURRENT_IPV4} for domain ${DYNU_DOMAIN_NAME}`);
+                            PREVIOUS_IPV4 = CURRENT_IPV4;
+                        } else {
+                            console.error(`Failed to update the IPv4 with status code ${resStatus}`);
+                        }
                     }
-                    const domainId = domain.id;
-                    await sleep(1000);
-
-                    // Update the DNS service
-                    const resStatus = await updateDnsService(domainId, CURRENT_IPV4, null);
-                    if (resStatus == 200) {
-                        console.log(`Successfully updated IPV4 from ${PREVIOUS_IPV4} to ${CURRENT_IPV4} for domain ${DYNU_DOMAIN_NAME}`);
-                        PREVIOUS_IPV4 = CURRENT_IPV4;
-                    } else {
-                        console.error(`Failed to update the ipv4 with status code ${resStatus}`);
-                    }
+                } catch (error) {
+                    console.error(`Error in main loop for service ${SERVICE}:`, error);
                 }
             }
             mutex = false;
         }
     } catch (error) {
-        console.error(`Error in main loop for service ${SERVICE}:`, error);
+        console.error(`Error in main loop:`, error);
+        mutex = false;
     }
 };
 
