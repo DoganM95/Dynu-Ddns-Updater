@@ -1,0 +1,34 @@
+name: Publish Docker image for Shell
+
+on:
+    push:
+        paths-ignore:
+            - "README.md"
+            - "javascript/**"
+            - ".github/workflows/publish-js.yml"
+
+jobs:
+    build-and-push-shell-image:
+        name: Build and push shell docker image to ghcr.io
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out the repo
+              uses: actions/checkout@v4
+            - name: Log in to the container registry
+              uses: docker/login-action@v3
+              with:
+                  registry: ghcr.io
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+            - name: Build and push shell docker image
+              uses: docker/build-push-action@v5
+              with:
+                  context: ./shell
+                  push: true
+                  tags: |
+                      ghcr.io/doganm95/dynu-ddns-updater-shell:v1.${{ github.run_number }}
+                      ghcr.io/doganm95/dynu-ddns-updater-shell:${{ github.sha }}
+                      ghcr.io/doganm95/dynu-ddns-updater-shell:latest
+                  labels: |
+                      org.opencontainers.image.source=${{ github.repository_url }}
+                      org.opencontainers.image.revision=${{ github.sha }}
