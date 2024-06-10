@@ -1,6 +1,6 @@
-# Dynu-Dns-Updater
+# Intro
 
-Automatically updates a dynu ddns hostname's ipv4 address to the address of the machine it runs on, whenever it changes.
+Automatically updates a dynu ddns hostname's ipv4 address to the address of the machine it runs on, whenever it changes.  
 
 - Default polling interval of 1 minute, needs a dynu account
 - Free service used here `ipinfo.io/ip` has a rate limiting of 50k requests / month
