@@ -6,7 +6,7 @@ SERVICES="http://ipinfo.io/ip" # Add services into existing string, separated by
 get_domains() {
     curl -s -X GET "https://api.dynu.com/v2/dns" \
         -H "accept: application/json" \
-        -H "API-Key: ${DYNU_API_KEY}"
+        -H "API-Key: $DYNU_API_KEY"
 }
 
 # Function to get DNS records
