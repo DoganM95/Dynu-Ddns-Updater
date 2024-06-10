@@ -4,7 +4,7 @@ const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
 // Environment variables
 const DYNU_API_KEY = process.env.DYNU_API_KEY;
 const DYNU_DOMAIN_NAME = process.env.DYNU_DOMAIN_NAME;
-const POLLING_INTERVAL = process.env.POLLING_INTERVAL || 60000; // Default: 1 minute
+const POLLING_INTERVAL = process.env.POLLING_INTERVAL * 1000 || 60000; // Default: 1 minute
 
 const SERVICES = ["http://ipinfo.io/ip"];
 let PREVIOUS_IPV4 = "";
