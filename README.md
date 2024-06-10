@@ -29,10 +29,10 @@ Specs of the image:
 ## Docker
 
 - Replace brackets `<>` and the text inside with your data:
-  - `DYNU_API_KEY` (string): your [dynu api key](https://www.dynu.com/en-US/ControlPanel/APICredentials), authorizing the rest calls
-  - `DYNU_DOMAIN_NAME` (string): the [hostname in your account](https://www.dynu.com/en-US/ControlPanel/DDNS) to get its ipv4 address updated
-  - `POLLING_INTERVAL` (uint): time in seconds to wait between each run
-  - `variant` (string): the language base of the code, can be `shell` or `js`
+  - `DYNU_API_KEY`: your [dynu api key](https://www.dynu.com/en-US/ControlPanel/APICredentials), authorizing the rest calls
+  - `DYNU_DOMAIN_NAME`: the [hostname in your account](https://www.dynu.com/en-US/ControlPanel/DDNS) to get its ipv4 address updated
+  - `POLLING_INTERVAL`: time in seconds to wait between each run
+  - `variant`: the language base of the code, can be `shell` or `js`
 
 
 ### Linux
