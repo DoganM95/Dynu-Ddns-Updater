@@ -9,28 +9,23 @@ get_domains() {
         -H "API-Key: $DYNU_API_KEY"
 }
 
-# Function to get DNS records
-get_dns_records() {
-    curl -s -X GET "https://api.dynu.com/v2/dns/${1}/record" \
-        -H "accept: application/json" \
-        -H "API-Key: ${DYNU_API_KEY}"
-}
+# Function to update DNS service
+update_dns_service() {
+    local id=$1
+    local new_ipv4=$2
+    local new_ipv6=$3
 
-# Function to update DNS record
-update_dns_record() {
-    DOMAIN_ID=$1
-    DNS_RECORD_ID=$2
-    NEW_IPV4=$3
-
-    curl -s -X POST "https://api.dynu.com/v2/dns/${DOMAIN_ID}/record/${DNS_RECORD_ID}" \
+    curl -s -X POST "https://api.dynu.com/v2/dns/$id" \
         -H "accept: application/json" \
-        -H "API-Key: ${DYNU_API_KEY}" \
+        -H "API-Key: $DYNU_API_KEY" \
         -H "Content-Type: application/json" \
         -d '{
-        "nodeName": "'"$(echo $DYNU_DOMAIN_NAME | cut -d. -f1)"'",
-        "recordType": "A",
-        "address": "'"${NEW_IPV4}"'"
-    }'
+            "name": "'"$DYNU_DOMAIN_NAME"'",
+            "ipv4Address": "'"$new_ipv4"'",
+            "ipv6Address": '"${new_ipv6:-null}"',
+            "ipv4": true,
+            "ipv6": true
+        }' | jq -r '.statusCode'
 }
 
 while true; do
