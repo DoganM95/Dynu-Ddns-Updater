@@ -1,2 +1,4 @@
 /node_modules
 /.env
+/javascript/.env
+/javascript/node_modules
