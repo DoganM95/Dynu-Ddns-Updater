@@ -29,41 +29,38 @@ update_dns_service() {
 }
 
 while true; do
+    echo "Checking IPv4 at $(date -Iseconds)"
     for SERVICE in $SERVICES; do
-        CURRENT_IPV4=$(curl -s "$SERVICE")
+        response=$(curl -s "$SERVICE")
+        CURRENT_IPV4=$(echo "$response" | tr -d '\n')
+
         if [ "$CURRENT_IPV4" != "$PREVIOUS_IPV4" ]; then
-            echo "Updating IPV4 from $PREVIOUS_IPV4 to $CURRENT_IPV4"
-            echo # \n
+            echo "Updating IPv4 due to a change..."
 
             # Get the list of domains & extract the domain ID
-            DOMAINS=$(get_domains)
-            DOMAIN_ID=$(echo $DOMAINS | jq -r --arg name "$DYNU_DOMAIN_NAME" '.domains[] | select(.name == $name) | .id')
+            domains=$(get_domains)
+            if [ -z "$domains" ]; then
+                echo "Failed to fetch domains."
+                continue
+            fi
 
-            if [ -z "$DOMAIN_ID" ]; then
+            domain_id=$(echo "$domains" | jq -r --arg name "$DYNU_DOMAIN_NAME" '.domains[] | select(.name == $name) | .id')
+            if [ -z "$domain_id" ]; then
                 echo "Error: Domain ID for $DYNU_DOMAIN_NAME not found."
                 exit 1
             fi
 
-            # Get DNS records & extract record ID for given domain name
-            DNS_RECORDS=$(get_dns_records $DOMAIN_ID)
-            echo "DNS_RECORDS: $DNS_RECORDS"
+            sleep 1 # Wait to not get hit by rate limiter
 
-            DNS_RECORD_ID=$(echo $DNS_RECORDS | jq -r --arg name "$DYNU_DOMAIN_NAME" '.dnsRecords[] | select(.hostname == $name and .recordType == "A") | .id')
-
-            if [ -z "$DNS_RECORD_ID" ]; then
-                echo "Error: DNS record for $DYNU_DOMAIN_NAME not found."
-                exit 1
+            # Update the DNS service
+            res_status=$(update_dns_service "$domain_id" "$CURRENT_IPV4" null)
+            if [ "$res_status" = "200" ]; then
+                echo "Successfully updated IPv4 from $PREVIOUS_IPV4 to $CURRENT_IPV4 for domain $DYNU_DOMAIN_NAME"
+                PREVIOUS_IPV4="$CURRENT_IPV4"
+            else
+                echo "Failed to update the IPv4 with status code $res_status"
             fi
-
-            # Update the DNS record
-            UPDATE_RESPONSE=$(update_dns_record $DOMAIN_ID $DNS_RECORD_ID $CURRENT_IPV4)
-            echo "Update response: $UPDATE_RESPONSE"
-
-            PREVIOUS_IPV4=$CURRENT_IPV4
         fi
-        echo "CURRENT_IPV4: ${CURRENT_IPV4}"
-        echo "DYNU_DOMAIN_NAME: ${DYNU_DOMAIN_NAME}"
-        echo
     done
-    sleep $POLLING_INTERVAL
+    sleep "$POLLING_INTERVAL" # Interval in seconds
 done
