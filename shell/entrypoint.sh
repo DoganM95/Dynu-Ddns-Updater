@@ -1,6 +1,10 @@
 #!/bin/sh
 
-SERVICES="http://ipinfo.io/ip" # Add services into existing string, separated by space
+# Default service value
+SERVICES=${SERVICES:-"http://ipinfo.io/ip"}
+
+# Parse comma separated services list from env var
+SERVICES=$(echo "$SERVICES" | tr ',' ' ')
 
 # Function to get the list of domains
 get_domains() {
@@ -28,11 +32,25 @@ update_dns_service() {
         }' | jq -r '.statusCode'
 }
 
+# Function to validate IPv4 format
+is_valid_ipv4() {
+    echo "$1" | grep -E "^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$" >/dev/null
+}
+
+PREVIOUS_IPV4=""
+
 while true; do
     echo "Checking IPv4 at $(date -Iseconds)"
+
     for SERVICE in $SERVICES; do
         response=$(curl -s "$SERVICE")
         CURRENT_IPV4=$(echo "$response" | tr -d '\n')
+
+        # Validate the response as an IPv4 address
+        if ! is_valid_ipv4 "$CURRENT_IPV4"; then
+            echo "Warning: Service $SERVICE returned an invalid IP: '$CURRENT_IPV4'. Skipping..."
+            continue
+        fi
 
         if [ "$CURRENT_IPV4" != "$PREVIOUS_IPV4" ]; then
             echo "Updating IPv4 due to a change..."
@@ -62,5 +80,6 @@ while true; do
             fi
         fi
     done
-    sleep "$POLLING_INTERVAL" # Interval in seconds
+
+    sleep "${POLLING_INTERVAL:-300}" # Default to 300 seconds if not set
 done
