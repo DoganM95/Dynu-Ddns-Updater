@@ -34,7 +34,6 @@ Specs of the image:
   - `POLLING_INTERVAL`: time in seconds to wait between each run
   - `variant`: the language base of the code, can be `shell` or `js`
 
-
 ### Linux
 
 ```shell
