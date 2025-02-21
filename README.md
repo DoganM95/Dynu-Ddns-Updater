@@ -42,7 +42,7 @@ docker run \
     -e "DYNU_API_KEY=<key>" \
     -e "DYNU_DOMAIN_NAME=<domain>" \
     -e "POLLING_INTERVAL=<interval>" \
-    -e "SERVICES=http://ipinfo.io/ip,http://https://api.ipify.org" \
+    -e "SERVICES=http://ipinfo.io/ip,https://api.ipify.org" \
     --name=dynu-ddns-updater \
     --pull=always \
     --restart=always \
@@ -57,7 +57,7 @@ docker run `
     -e "DYNU_API_KEY=<key>" `
     -e "DYNU_DOMAIN_NAME=<domain>" `
     -e "POLLING_INTERVAL=<interval>" `
-    -e "SERVICES=http://ipinfo.io/ip,http://https://api.ipify.org" `
+    -e "SERVICES=http://ipinfo.io/ip,https://api.ipify.org" `
     --name=dynu-ddns-updater `
     --pull=always `
     --restart=always `
