@@ -43,6 +43,7 @@ docker run \
     -e "DYNU_API_KEY=<key>" \
     -e "DYNU_DOMAIN_NAME=<domain>" \
     -e "POLLING_INTERVAL=<interval>" \
+    --name=dynu-ddns-updater \
     --pull=always \
     --restart=always \
     ghcr.io/doganm95/dynu-ddns-updater-<variant>:latest
@@ -56,6 +57,7 @@ docker run `
     -e "DYNU_API_KEY=<key>" `
     -e "DYNU_DOMAIN_NAME=<domain>" `
     -e "POLLING_INTERVAL=<interval>" `
+    --name=dynu-ddns-updater `
     --pull=always `
     --restart=always `
     ghcr.io/doganm95/dynu-ddns-updater-<variant>:latest
