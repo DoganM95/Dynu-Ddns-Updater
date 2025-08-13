@@ -28,7 +28,7 @@ jobs:
               with:
                   context: ./shell
                   push: true
-                  platforms: linux/arm64
+                  platforms: linux/arm64,linux/arm64/v8,linux/arm/v6,linux/arm/v7
                   tags: |
                       ghcr.io/doganm95/dynu-ddns-updater-shell-arm64:v1.${{ github.run_number }}
                       ghcr.io/doganm95/dynu-ddns-updater-shell-arm64:${{ github.sha }}
